@@ -1,0 +1,16 @@
+name: Unrelated CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "unrelated workflow, run ${{ github.run_id }} attempt ${{ github.run_attempt }}"
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 20 && echo "unrelated test job"

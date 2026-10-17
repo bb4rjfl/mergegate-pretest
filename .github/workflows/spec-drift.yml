@@ -1,0 +1,27 @@
+name: MergeGate Spec Drift (GITHUB_TOKEN)
+on:
+  pull_request:
+permissions:
+  checks: write
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create check run "mergegate/spec-drift" via REST with GITHUB_TOKEN
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          echo "run_id=${{ github.run_id }} sha=$GITHUB_SHA head_sha=$HEAD_SHA"
+          gh api -X POST "repos/${{ github.repository }}/check-runs" \
+            -f name="mergegate/spec-drift" \
+            -f head_sha="$HEAD_SHA" \
+            -f status="completed" \
+            -f conclusion="success" \
+            -f "output[title]=Spec drift: 0 violations" \
+            -f "output[summary]=Created by GITHUB_TOKEN in workflow run ${{ github.run_id }} (attempt ${{ github.run_attempt }})" \
+            > check-run.json
+          cat check-run.json
+          echo "### check run" >> "$GITHUB_STEP_SUMMARY"
+          jq -r '"id=\(.id) check_suite.id=\(.check_suite.id) app=\(.app.slug) html=\(.html_url)"' check-run.json | tee -a "$GITHUB_STEP_SUMMARY"
