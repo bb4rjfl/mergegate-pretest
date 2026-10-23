@@ -1,0 +1,3 @@
+schema: mergegate/config@1
+mode: block
+ignore_paths: ["docs/**"]
