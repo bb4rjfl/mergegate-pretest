@@ -1,1 +1,1 @@
-export const REFUND_WINDOW_DAYS = 7;
+export const REFUND_WINDOW_DAYS = 14;

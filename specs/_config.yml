@@ -1,2 +1,2 @@
 schema: mergegate/config@1
-mode: block
+mode: shadow
